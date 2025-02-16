@@ -8,9 +8,9 @@ public class CollegeStudent implements Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column
+    @Column(name = "first_name")
     private String firstName;
-    @Column
+    @Column(name="last_name")
     private String lastName;
     @Column(name="email_address")
     private String emailAddress;
