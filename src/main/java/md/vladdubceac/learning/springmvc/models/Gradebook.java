@@ -1,8 +1,11 @@
-package md.vladdubceac.learning.models;
+package md.vladdubceac.learning.springmvc.models;
+
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class Gradebook {
 
     private List<GradebookCollegeStudent> students = new ArrayList<>();

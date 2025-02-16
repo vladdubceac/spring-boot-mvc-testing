@@ -1,4 +1,4 @@
-package md.vladdubceac.learning.models;
+package md.vladdubceac.learning.springmvc.models;
 
 public class GradebookCollegeStudent extends CollegeStudent {
     private int id;

@@ -1,12 +1,18 @@
-package md.vladdubceac.learning.models;
+package md.vladdubceac.learning.springmvc.models;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="student")
 public class CollegeStudent implements Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    @Column
     private String firstName;
-
+    @Column
     private String lastName;
-
+    @Column(name="email_address")
     private String emailAddress;
 
     public CollegeStudent() {

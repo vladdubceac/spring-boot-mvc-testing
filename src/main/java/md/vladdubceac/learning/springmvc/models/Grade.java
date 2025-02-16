@@ -1,4 +1,4 @@
-package md.vladdubceac.learning.models;
+package md.vladdubceac.learning.springmvc.models;
 
 public interface Grade {
     double getGrade();

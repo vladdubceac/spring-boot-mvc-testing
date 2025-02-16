@@ -1,14 +1,22 @@
-package md.vladdubceac.learning.models;
+package md.vladdubceac.learning.springmvc.models;
 
-public class MathGrade implements Grade {
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "history-grade")
+public class HistoryGrade implements Grade {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "student_id")
     private int studentId;
+    @Column(name = "grade")
     private double grade;
 
-    public MathGrade() {
+    public HistoryGrade() {
     }
 
-    public MathGrade(double grade) {
+    public HistoryGrade(double grade) {
         this.grade = grade;
     }
 
