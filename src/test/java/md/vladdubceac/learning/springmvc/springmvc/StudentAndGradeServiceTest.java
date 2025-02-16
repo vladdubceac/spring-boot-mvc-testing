@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,6 +64,20 @@ public class StudentAndGradeServiceTest {
         deletedCollegeStudent = studentDao.findById(1);
 
         assertFalse(deletedCollegeStudent.isPresent(),"Return False");
+    }
+
+    @Test
+    public void getGradebookService(){
+
+        Iterable<CollegeStudent> iterableCollegeStudents = studentService.getGradebook();
+
+        List<CollegeStudent> collegeStudentList = new ArrayList<>();
+
+        for(CollegeStudent collegeStudent : iterableCollegeStudents){
+            collegeStudentList.add(collegeStudent);
+        }
+
+        assertEquals(1, collegeStudentList.size());
     }
 
     @AfterEach
