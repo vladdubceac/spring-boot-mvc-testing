@@ -55,8 +55,8 @@ public class GradebookControllerTest {
     @BeforeAll
     public static void setup(){
         request = new MockHttpServletRequest();
-        request.setParameter("firstname", "Vlad");
-        request.setParameter("lastname", "Dubceac");
+        request.setParameter("firstName", "Vlad");
+        request.setParameter("lastName", "Dubceac");
         request.setParameter("emailAddress", "dubceacvlad@gmail.com");
     }
 
@@ -95,8 +95,8 @@ public class GradebookControllerTest {
         assertIterableEquals(collegeStudentList, studentCreateServiceMock.getGradebook());
 
         MvcResult mvcResult = this.mockMvc.perform(post("/").content(MediaType.APPLICATION_JSON_VALUE)
-                .param("firstName", request.getParameterValues("firstname"))
-                .param("lastName",request.getParameterValues("lastname"))
+                .param("firstName", request.getParameterValues("firstName"))
+                .param("lastName",request.getParameterValues("lastName"))
                 .param("emailAddress",request.getParameterValues("emailAddress"))
                 ).andExpect(status().isOk()).andReturn();
 

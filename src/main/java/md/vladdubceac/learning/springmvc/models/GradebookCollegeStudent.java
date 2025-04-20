@@ -5,12 +5,12 @@ public class GradebookCollegeStudent extends CollegeStudent {
 
     private StudentGrades studentGrades;
 
-    public GradebookCollegeStudent(String firstname, String lastname, String emailAddress) {
-        super(firstname, lastname, emailAddress);
+    public GradebookCollegeStudent(String firstName, String lastName, String emailAddress) {
+        super(firstName, lastName, emailAddress);
     }
 
-    public GradebookCollegeStudent(int id, String firstname, String lastname, String emailAddress, StudentGrades studentGrades) {
-        super(firstname, lastname, emailAddress);
+    public GradebookCollegeStudent(int id, String firstName, String lastName, String emailAddress, StudentGrades studentGrades) {
+        super(firstName, lastName, emailAddress);
         this.studentGrades = studentGrades;
         this.id = id;
     }
