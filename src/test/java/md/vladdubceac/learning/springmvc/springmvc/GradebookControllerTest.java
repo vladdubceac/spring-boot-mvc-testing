@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
@@ -46,7 +47,7 @@ public class GradebookControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private StudentAndGradeService studentAndGradeServiceMock;
+    private StudentAndGradeService studentCreateServiceMock;
 
     @Autowired
     private StudentDao studentDao;
@@ -72,9 +73,9 @@ public class GradebookControllerTest {
 
         List<CollegeStudent> collegeStudentList = new ArrayList<>(List.of(studentOne, studentTwo));
 
-        when(studentAndGradeServiceMock.getGradebook()).thenReturn(collegeStudentList);
+        when(studentCreateServiceMock.getGradebook()).thenReturn(collegeStudentList);
 
-        assertIterableEquals(collegeStudentList, studentAndGradeServiceMock.getGradebook());
+        assertIterableEquals(collegeStudentList, studentCreateServiceMock.getGradebook());
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/")).andExpect(status().isOk()).andReturn();
 
@@ -85,6 +86,14 @@ public class GradebookControllerTest {
 
     @Test
     public void createStudentHttpRequest() throws Exception{
+        CollegeStudent studentOne = new CollegeStudent("test","student","test_student@test.com" );
+
+        List<CollegeStudent> collegeStudentList = new ArrayList<>(Arrays.asList(studentOne));
+
+        when(studentCreateServiceMock.getGradebook()).thenReturn(collegeStudentList);
+
+        assertIterableEquals(collegeStudentList, studentCreateServiceMock.getGradebook());
+
         MvcResult mvcResult = this.mockMvc.perform(post("/").content(MediaType.APPLICATION_JSON_VALUE)
                 .param("firstName", request.getParameterValues("firstname"))
                 .param("lastName",request.getParameterValues("lastname"))

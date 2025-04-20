@@ -32,15 +32,14 @@ public class StudentAndGradeServiceTest {
     private StudentDao studentDao;
 
     @BeforeEach
-    public void setupDatabase(){
+    public void setupDatabase() {
         jdbcTemplate.execute("INSERT INTO student(first_name, last_name, email_address) " +
                 " VALUES('Test', 'User', 'test.user@myemail.com') ");
     }
 
     @Test
     public void createStudentService() {
-
-        studentService.createStudent("Vlad","Dubceac", "dubceacvlad@gmail.com");
+        studentService.createStudent("Vlad", "Dubceac", "dubceacvlad@gmail.com");
 
         CollegeStudent student = studentDao.findByEmailAddress("dubceacvlad@gmail.com");
 
@@ -48,14 +47,13 @@ public class StudentAndGradeServiceTest {
     }
 
     @Test
-    public void isStudentNullCheck(){
+    public void isStudentNullCheck() {
         assertTrue(studentService.checkIfStudentIsNull(1));
         assertFalse(studentService.checkIfStudentIsNull(0));
     }
 
     @Test
-    public void deleteStudentService(){
-
+    public void deleteStudentService() {
         Optional<CollegeStudent> deletedCollegeStudent = studentDao.findById(1);
 
         assertTrue(deletedCollegeStudent.isPresent(), "Return True");
@@ -64,18 +62,17 @@ public class StudentAndGradeServiceTest {
 
         deletedCollegeStudent = studentDao.findById(1);
 
-        assertFalse(deletedCollegeStudent.isPresent(),"Return False");
+        assertFalse(deletedCollegeStudent.isPresent(), "Return False");
     }
 
     @Sql("/insertData.sql")
     @Test
-    public void getGradebookService(){
-
+    public void getGradebookService() {
         Iterable<CollegeStudent> iterableCollegeStudents = studentService.getGradebook();
 
         List<CollegeStudent> collegeStudentList = new ArrayList<>();
 
-        for(CollegeStudent collegeStudent : iterableCollegeStudents){
+        for (CollegeStudent collegeStudent : iterableCollegeStudents) {
             collegeStudentList.add(collegeStudent);
         }
 
@@ -83,7 +80,7 @@ public class StudentAndGradeServiceTest {
     }
 
     @AfterEach
-    public void cleanup(){
+    public void cleanup() {
         jdbcTemplate.execute("DELETE FROM student");
         jdbcTemplate.execute("ALTER TABLE student ALTER COLUMN id RESTART WITH 1");
     }
