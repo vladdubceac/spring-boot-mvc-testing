@@ -2,8 +2,15 @@ package md.vladdubceac.learning.springmvc.service;
 
 import jakarta.transaction.Transactional;
 import md.vladdubceac.learning.springmvc.models.CollegeStudent;
+import md.vladdubceac.learning.springmvc.models.HistoryGrade;
+import md.vladdubceac.learning.springmvc.models.MathGrade;
+import md.vladdubceac.learning.springmvc.models.ScienceGrade;
+import md.vladdubceac.learning.springmvc.repository.HistoryGradeDao;
+import md.vladdubceac.learning.springmvc.repository.MathGradeDao;
+import md.vladdubceac.learning.springmvc.repository.ScienceGradeDao;
 import md.vladdubceac.learning.springmvc.repository.StudentDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -13,6 +20,27 @@ public class StudentAndGradeService {
 
     @Autowired
     private StudentDao studentDao;
+
+    @Autowired
+    @Qualifier("mathGrades")
+    private MathGrade mathGrade;
+
+    @Autowired
+    private MathGradeDao mathGradeDao;
+
+    @Autowired
+    @Qualifier("scienceGrades")
+    private ScienceGrade scienceGrade;
+
+    @Autowired
+    private ScienceGradeDao scienceGradeDao;
+
+    @Autowired
+    @Qualifier("historyGrades")
+    private HistoryGrade historyGrade;
+
+    @Autowired
+    private HistoryGradeDao historyGradeDao;
 
     public void createStudent(String firstName, String lastName, String emailAddress){
         CollegeStudent student = new CollegeStudent(firstName,lastName,emailAddress);
@@ -31,5 +59,49 @@ public class StudentAndGradeService {
 
     public Iterable<CollegeStudent> getGradebook(){
         return studentDao.findAll();
+    }
+
+    public boolean createGrade(double grade, int studentId, String gradeType) {
+        if(!checkIfStudentIsNull(studentId)) {
+            return false;
+        }
+
+        if(grade >= 0 && grade <= 100){
+            switch (gradeType.toLowerCase()){
+                case "math":
+                    saveMathGrade(grade, studentId);
+                    return true;
+                case "science":
+                    saveScienceGrade(grade, studentId);
+                    return true;
+                case "history":
+                    saveHistoryGrade(grade, studentId);
+                    return true;
+                default:
+                    return false;
+            }
+        }
+        return false;
+    }
+
+    private void saveHistoryGrade(double grade, int studentId) {
+        historyGrade.setId(0);
+        historyGrade.setGrade(grade);
+        historyGrade.setStudentId(studentId);
+        historyGradeDao.save(historyGrade);
+    }
+
+    private void saveScienceGrade(double grade, int studentId) {
+        scienceGrade.setId(0);
+        scienceGrade.setGrade(grade);
+        scienceGrade.setStudentId(studentId);
+        scienceGradeDao.save(scienceGrade);
+    }
+
+    private void saveMathGrade(double grade, int studentId) {
+        mathGrade.setId(0);
+        mathGrade.setGrade(grade);
+        mathGrade.setStudentId(studentId);
+        mathGradeDao.save(mathGrade);
     }
 }
