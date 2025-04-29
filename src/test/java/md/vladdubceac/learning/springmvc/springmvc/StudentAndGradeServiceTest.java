@@ -50,6 +50,10 @@ public class StudentAndGradeServiceTest {
     public void setupDatabase() {
         jdbcTemplate.execute("INSERT INTO student(first_name, last_name, email_address) " +
                 " VALUES('Test', 'User', 'test.user@myemail.com') ");
+
+        jdbcTemplate.execute("INSERT INTO math_grade(student_id, grade) VALUES(1, 99.00)");
+        jdbcTemplate.execute("INSERT INTO science_grade(student_id, grade) VALUES(1, 100.00)");
+        jdbcTemplate.execute("INSERT INTO history_grade(student_id, grade) VALUES(1, 98.00)");
     }
 
     @Test
@@ -124,6 +128,13 @@ public class StudentAndGradeServiceTest {
     @AfterEach
     public void cleanup() {
         jdbcTemplate.execute("DELETE FROM student");
+        jdbcTemplate.execute("DELETE FROM math_grade");
+        jdbcTemplate.execute("DELETE FROM science_grade");
+        jdbcTemplate.execute("DELETE FROM history_grade");
+
         jdbcTemplate.execute("ALTER TABLE student ALTER COLUMN id RESTART WITH 1");
+        jdbcTemplate.execute("ALTER TABLE math_grade ALTER COLUMN id RESTART WITH 1");
+        jdbcTemplate.execute("ALTER TABLE science_grade ALTER COLUMN id RESTART WITH 1");
+        jdbcTemplate.execute("ALTER TABLE history_grade ALTER COLUMN id RESTART WITH 1");
     }
 }

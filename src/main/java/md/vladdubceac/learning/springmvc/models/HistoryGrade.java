@@ -3,7 +3,7 @@ package md.vladdubceac.learning.springmvc.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "history-grade")
+@Table(name = "history_grade")
 public class HistoryGrade implements Grade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
