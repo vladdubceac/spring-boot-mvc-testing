@@ -105,7 +105,7 @@ public class StudentAndGradeService {
     }
 
     public int deleteGrade(int id, String gradeType) {
-        int studentId = -1;
+        int studentId = 0;
         Optional<? extends Grade> grade = Optional.empty();
         switch (gradeType){
             case "math":
