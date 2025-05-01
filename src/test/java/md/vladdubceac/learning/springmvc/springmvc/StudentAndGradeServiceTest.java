@@ -4,10 +4,10 @@ import md.vladdubceac.learning.springmvc.models.CollegeStudent;
 import md.vladdubceac.learning.springmvc.models.HistoryGrade;
 import md.vladdubceac.learning.springmvc.models.MathGrade;
 import md.vladdubceac.learning.springmvc.models.ScienceGrade;
+import md.vladdubceac.learning.springmvc.repository.HistoryGradeDao;
 import md.vladdubceac.learning.springmvc.repository.MathGradeDao;
 import md.vladdubceac.learning.springmvc.repository.ScienceGradeDao;
 import md.vladdubceac.learning.springmvc.repository.StudentDao;
-import md.vladdubceac.learning.springmvc.repository.HistoryGradeDao;
 import md.vladdubceac.learning.springmvc.service.StudentAndGradeService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +19,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,7 +100,7 @@ public class StudentAndGradeServiceTest {
     }
 
     @Test
-    public void createGradeService(){
+    public void createGradeService() {
 
         // Create the grade
         assertTrue(studentService.createGrade(80.50, 1, "math"));
@@ -112,13 +113,13 @@ public class StudentAndGradeServiceTest {
         Iterable<HistoryGrade> historyGrades = historyGradeDao.findGradeByStudentId(1);
 
         // Verify there is grades
-        assertTrue(mathGrades.iterator().hasNext(), "Student has math grades");
-        assertTrue(scienceGrades.iterator().hasNext(), "Student has science grades");
-        assertTrue(historyGrades.iterator().hasNext(), "Student has history grades");
+        assertEquals(2, ((Collection<MathGrade>) mathGrades).size());
+        assertEquals(2, ((Collection<ScienceGrade>) scienceGrades).size());
+        assertEquals(2, ((Collection<HistoryGrade>) historyGrades).size());
     }
 
     @Test
-    public void createGradeServiceReturnFalse(){
+    public void createGradeServiceReturnFalse() {
         assertFalse(studentService.createGrade(102, 1, "math"));
         assertFalse(studentService.createGrade(-10, 1, "math"));
         assertFalse(studentService.createGrade(80.51, 2, "math"));
