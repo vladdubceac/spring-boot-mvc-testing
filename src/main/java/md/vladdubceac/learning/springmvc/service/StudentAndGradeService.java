@@ -1,10 +1,7 @@
 package md.vladdubceac.learning.springmvc.service;
 
 import jakarta.transaction.Transactional;
-import md.vladdubceac.learning.springmvc.models.CollegeStudent;
-import md.vladdubceac.learning.springmvc.models.HistoryGrade;
-import md.vladdubceac.learning.springmvc.models.MathGrade;
-import md.vladdubceac.learning.springmvc.models.ScienceGrade;
+import md.vladdubceac.learning.springmvc.models.*;
 import md.vladdubceac.learning.springmvc.repository.HistoryGradeDao;
 import md.vladdubceac.learning.springmvc.repository.MathGradeDao;
 import md.vladdubceac.learning.springmvc.repository.ScienceGradeDao;
@@ -12,6 +9,8 @@ import md.vladdubceac.learning.springmvc.repository.StudentDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -103,5 +102,36 @@ public class StudentAndGradeService {
         mathGrade.setGrade(grade);
         mathGrade.setStudentId(studentId);
         mathGradeDao.save(mathGrade);
+    }
+
+    public int deleteGrade(int id, String gradeType) {
+        int studentId = -1;
+        Optional<? extends Grade> grade = Optional.empty();
+        switch (gradeType){
+            case "math":
+                grade = mathGradeDao.findById(id);
+                if(grade.isPresent()) {
+                    studentId = grade.get().getStudentId();
+                    mathGradeDao.deleteById(id);
+                }
+                break;
+            case "science":
+                grade = scienceGradeDao.findById(id);
+                if(grade.isPresent()){
+                    studentId = grade.get().getStudentId();
+                    scienceGradeDao.deleteById(id);
+                }
+                break;
+            case "history":
+                grade = historyGradeDao.findById(id);
+                if(grade.isPresent()){
+                    studentId = grade.get().getStudentId();
+                    historyGradeDao.deleteById(id);
+                }
+                break;
+            default:
+                return studentId;
+        }
+        return studentId;
     }
 }

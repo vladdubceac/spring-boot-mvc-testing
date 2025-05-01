@@ -126,6 +126,13 @@ public class StudentAndGradeServiceTest {
         assertFalse(studentService.createGrade(80.51, 1, "literature"));
     }
 
+    @Test
+    public void deleteGradeService(){
+        assertEquals(1, studentService.deleteGrade(1,"math"), "Returns student's ID after delete Math grade");
+        assertEquals(1, studentService.deleteGrade(1,"science"), "Returns student's ID after delete Science grade");
+        assertEquals(1, studentService.deleteGrade(1,"history"), "Returns student's ID after delete History grade");
+    }
+
     @AfterEach
     public void cleanup() {
         jdbcTemplate.execute("DELETE FROM student");
