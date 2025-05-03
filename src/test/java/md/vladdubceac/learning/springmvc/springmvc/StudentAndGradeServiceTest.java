@@ -1,9 +1,6 @@
 package md.vladdubceac.learning.springmvc.springmvc;
 
-import md.vladdubceac.learning.springmvc.models.CollegeStudent;
-import md.vladdubceac.learning.springmvc.models.HistoryGrade;
-import md.vladdubceac.learning.springmvc.models.MathGrade;
-import md.vladdubceac.learning.springmvc.models.ScienceGrade;
+import md.vladdubceac.learning.springmvc.models.*;
 import md.vladdubceac.learning.springmvc.repository.HistoryGradeDao;
 import md.vladdubceac.learning.springmvc.repository.MathGradeDao;
 import md.vladdubceac.learning.springmvc.repository.ScienceGradeDao;
@@ -149,6 +146,26 @@ public class StudentAndGradeServiceTest {
     public void deleteGradeServiceReturnStudentIdOfZero(){
         assertEquals(0, studentService.deleteGrade(0, "science"), "No student should have 0 ID");
         assertEquals(0, studentService.deleteGrade(0, "literature"), "No student has literature");
+    }
+
+    @Test
+    public void studentInformation(){
+        GradebookCollegeStudent gradebookCollegeStudent = studentService.studentInformation(1);
+
+        assertNotNull(gradebookCollegeStudent);
+        assertEquals(1, gradebookCollegeStudent.getId());
+        assertEquals("Test", gradebookCollegeStudent.getFirstName());
+        assertEquals("User", gradebookCollegeStudent.getLastName());
+        assertEquals("test.user@myemail.com", gradebookCollegeStudent.getEmailAddress());
+        assertEquals(1, gradebookCollegeStudent.getStudentGrades().getHistoryGradeResults().size());
+        assertEquals(1, gradebookCollegeStudent.getStudentGrades().getMathGradeResults().size());
+        assertEquals(1, gradebookCollegeStudent.getStudentGrades().getHistoryGradeResults().size());
+    }
+
+    @Test
+    public void studentInformationServiceReturnNull(){
+        GradebookCollegeStudent gradebookCollegeStudent = studentService.studentInformation(0);
+        assertNull(gradebookCollegeStudent);
     }
 
     @AfterEach

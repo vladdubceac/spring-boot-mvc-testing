@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,6 +42,9 @@ public class StudentAndGradeService {
 
     @Autowired
     private HistoryGradeDao historyGradeDao;
+
+    @Autowired
+    private StudentGrades studentGrades;
 
     public void createStudent(String firstName, String lastName, String emailAddress){
         CollegeStudent student = new CollegeStudent(firstName,lastName,emailAddress);
@@ -136,5 +141,30 @@ public class StudentAndGradeService {
                 return studentId;
         }
         return studentId;
+    }
+
+    public GradebookCollegeStudent studentInformation(int id) {
+        Optional<CollegeStudent> student = studentDao.findById(id);
+        if(student.isPresent()) {
+            CollegeStudent collegeStudent = student.get();
+
+            Iterable<MathGrade> mathGrades = mathGradeDao.findGradeByStudentId(id);
+            List<Grade> mathGradeList = new ArrayList<>();
+            mathGrades.forEach(mathGradeList::add);
+
+            Iterable<ScienceGrade> scienceGrades = scienceGradeDao.findGradeByStudentId(id);
+            List<Grade> scienceGradeList = new ArrayList<>();
+            scienceGrades.forEach(scienceGradeList::add);
+
+            Iterable<HistoryGrade> historyGrades = historyGradeDao.findGradeByStudentId(id);
+            List<Grade> historyGradeList = new ArrayList<>();
+            historyGrades.forEach(historyGradeList::add);
+
+            studentGrades.setHistoryGradeResults(historyGradeList);
+            studentGrades.setMathGradeResults(mathGradeList);
+            studentGrades.setScienceGradeResults(scienceGradeList);
+            return new GradebookCollegeStudent(id, collegeStudent.getFirstName(), collegeStudent.getLastName(), collegeStudent.getEmailAddress(),studentGrades);
+        }
+        return null;
     }
 }
