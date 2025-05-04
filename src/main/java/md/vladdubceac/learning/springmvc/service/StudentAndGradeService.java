@@ -171,6 +171,7 @@ public class StudentAndGradeService {
 
     public void configureStudentInformationModel(int studentId, Model model){
         GradebookCollegeStudent studentEntity = studentInformation(studentId);
+        model.addAttribute("student", studentEntity);
         if (studentEntity.getStudentGrades().getMathGradeResults().size() > 0) {
             model.addAttribute("mathAverage", studentEntity.getStudentGrades().findGradePointAverage(
                     studentEntity.getStudentGrades().getMathGradeResults()
