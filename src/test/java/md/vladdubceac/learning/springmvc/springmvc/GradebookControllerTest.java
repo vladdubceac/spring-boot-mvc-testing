@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -39,7 +40,7 @@ public class GradebookControllerTest {
     private static MockHttpServletRequest request;
 
     @Autowired
-    private JdbcTemplate jdbc;
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private MockMvc mockMvc;
@@ -49,6 +50,30 @@ public class GradebookControllerTest {
 
     @Autowired
     private StudentDao studentDao;
+
+    @Value("${sql.script.create.student}")
+    private String sqlAddStudent;
+
+    @Value("${sql.script.create.math.grades}")
+    private String sqlAddMathGrade;
+
+    @Value("${sql.script.create.science.grades}")
+    private String sqlAddScienceGrade;
+
+    @Value("${sql.script.create.history.grades}")
+    private String sqlAddHistoryGrade;
+
+    @Value("${sql.script.delete.student}")
+    private String sqlDeleteStudent;
+
+    @Value("${sql.script.delete.math.grades}")
+    private String sqlDeleteMathGrade;
+
+    @Value("${sql.script.delete.science.grades}")
+    private String sqlDeleteScienceGrade;
+
+    @Value("${sql.script.delete.history.grades}")
+    private String sqlDeleteHistoryGrade;
 
     @BeforeAll
     public static void setup(){
@@ -60,8 +85,10 @@ public class GradebookControllerTest {
 
     @BeforeEach
     public void beforeEach() {
-        jdbc.execute("INSERT INTO student(first_name, last_name, email_address) " +
-                " VALUES('Test', 'User', 'test.user@myemail.com') ");
+        jdbcTemplate.execute(sqlAddStudent);
+        jdbcTemplate.execute(sqlAddHistoryGrade);
+        jdbcTemplate.execute(sqlAddMathGrade);
+        jdbcTemplate.execute(sqlAddScienceGrade);
     }
 
     @Test
@@ -133,7 +160,9 @@ public class GradebookControllerTest {
 
     @AfterEach
     public void setupAfterTransaction() {
-        jdbc.execute("DELETE FROM student");
-        jdbc.execute("ALTER TABLE student ALTER COLUMN id RESTART WITH 1");
+        jdbcTemplate.execute(sqlDeleteStudent);
+        jdbcTemplate.execute(sqlDeleteMathGrade);
+        jdbcTemplate.execute(sqlDeleteScienceGrade);
+        jdbcTemplate.execute(sqlDeleteHistoryGrade);
     }
 }

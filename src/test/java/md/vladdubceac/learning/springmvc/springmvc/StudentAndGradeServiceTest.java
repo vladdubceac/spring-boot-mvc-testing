@@ -10,6 +10,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
@@ -44,14 +45,36 @@ public class StudentAndGradeServiceTest {
     @Autowired
     private HistoryGradeDao historyGradeDao;
 
+    @Value("${sql.script.create.student}")
+    private String sqlAddStudent;
+
+    @Value("${sql.script.create.math.grades}")
+    private String sqlAddMathGrade;
+
+    @Value("${sql.script.create.science.grades}")
+    private String sqlAddScienceGrade;
+
+    @Value("${sql.script.create.history.grades}")
+    private String sqlAddHistoryGrade;
+
+    @Value("${sql.script.delete.student}")
+    private String sqlDeleteStudent;
+
+    @Value("${sql.script.delete.math.grades}")
+    private String sqlDeleteMathGrade;
+
+    @Value("${sql.script.delete.science.grades}")
+    private String sqlDeleteScienceGrade;
+
+    @Value("${sql.script.delete.history.grades}")
+    private String sqlDeleteHistoryGrade;
+
     @BeforeEach
     public void setupDatabase() {
-        jdbcTemplate.execute("INSERT INTO student(first_name, last_name, email_address) " +
-                " VALUES('Test', 'User', 'test.user@myemail.com') ");
-
-        jdbcTemplate.execute("INSERT INTO math_grade(student_id, grade) VALUES(1, 99.00)");
-        jdbcTemplate.execute("INSERT INTO science_grade(student_id, grade) VALUES(1, 100.00)");
-        jdbcTemplate.execute("INSERT INTO history_grade(student_id, grade) VALUES(1, 98.00)");
+        jdbcTemplate.execute(sqlAddStudent);
+        jdbcTemplate.execute(sqlAddHistoryGrade);
+        jdbcTemplate.execute(sqlAddMathGrade);
+        jdbcTemplate.execute(sqlAddScienceGrade);
     }
 
     @Test
@@ -170,14 +193,9 @@ public class StudentAndGradeServiceTest {
 
     @AfterEach
     public void cleanup() {
-        jdbcTemplate.execute("DELETE FROM student");
-        jdbcTemplate.execute("DELETE FROM math_grade");
-        jdbcTemplate.execute("DELETE FROM science_grade");
-        jdbcTemplate.execute("DELETE FROM history_grade");
-
-        jdbcTemplate.execute("ALTER TABLE student ALTER COLUMN id RESTART WITH 1");
-        jdbcTemplate.execute("ALTER TABLE math_grade ALTER COLUMN id RESTART WITH 1");
-        jdbcTemplate.execute("ALTER TABLE science_grade ALTER COLUMN id RESTART WITH 1");
-        jdbcTemplate.execute("ALTER TABLE history_grade ALTER COLUMN id RESTART WITH 1");
+        jdbcTemplate.execute(sqlDeleteStudent);
+        jdbcTemplate.execute(sqlDeleteMathGrade);
+        jdbcTemplate.execute(sqlDeleteScienceGrade);
+        jdbcTemplate.execute(sqlDeleteHistoryGrade);
     }
 }
